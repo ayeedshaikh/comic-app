@@ -79,3 +79,10 @@ Description - Get comic statistics by id from dynamodb
 
 
 Use postman or http://127.0.0.1:5000/api/ui/ to test the APIs
+
+**Update .env**
+AWS_ACCESS_KEY_ID='fakeMyKeyId'
+AWS_SECRET_ACCESS_KEY='fakeSecretAccessKey'
+REGION_NAME='us-west-2'
+ENDPOINT_URL='http://localhost:8000'
+with you AWS access Key
