@@ -1,0 +1,112 @@
+openapi: 3.0.3
+info:
+  title: XKCD Comic API
+  version: 1.0.0
+
+servers:
+  - url: /api
+
+paths:
+  /comic-by-date/{date}:
+    post:
+      summary: Get comic metadata and image by date
+      operationId: "controller.get_comic_by_date"
+      parameters:
+        - name: date
+          in: path
+          description: Date in the format DDMMYYYY
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{2}\d{2}\d{4}$'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicResponse'
+        '400':
+          description: Bad Request
+
+  /comic-by-id/{comic_id}:
+    post:
+      summary: Get comic metadata and image by comic id
+      operationId: "controller.get_comic_by_id"
+      parameters:
+        - name: comic_id
+          in: path
+          description: Comic ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicResponse'
+        '400':
+          description: Bad Request
+
+  /comic-using-soup/{date}:
+    post:
+      summary: Get comic metadata and image by date using Soup
+      operationId: "controller.search_comic_by_date"
+      parameters:
+        - name: date
+          in: path
+          description: Date in the format DDMMYYYY
+          required: true
+          schema:
+            type: string
+            pattern: '^\d{2}\d{2}\d{4}$'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicResponse'
+        '400':
+          description: Bad Request
+
+  /comic-statistics/{comic_id}:
+    get:
+      summary: Get comic statistics by comic id
+      operationId: "controller.get_comic_statistics"
+      parameters:
+        - name: comic_id
+          in: path
+          description: Comic ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicStatisticsResponse'
+        '400':
+          description: Bad Request
+
+components:
+  schemas:
+    ComicResponse:
+      type: object
+      properties:
+        title:
+          type: string
+        image_url:
+          type: string
+
+    ComicStatisticsResponse:
+      type: object
+      properties:
+        views:
+          type: integer
+
+

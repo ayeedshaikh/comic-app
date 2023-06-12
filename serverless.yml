@@ -1,0 +1,24 @@
+service: comic-app
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.9
+  stage: dev
+  region: us-west-2
+  memorySize: 128
+  timeout: 30
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-wsgi

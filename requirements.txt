@@ -1,0 +1,7 @@
+Flask==2.2.2
+connexion[swagger-ui]==2.14.1
+pytest
+boto3
+beautifulsoup4
+localstack
+python-dotenv
