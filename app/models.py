@@ -86,3 +86,21 @@ def update_views(pk):
     )
     response['Attributes']['views'] = int(response['Attributes']['views'])
     return response
+
+
+table = resource.Table("User")
+
+
+def create_user(username, password):
+    table.put_item(
+        Item={
+            "username": username,
+            "password": password,
+        }
+    )
+
+
+def get_user(username):
+    response = table.get_item(Key={"username": username})
+    user = response.get("Item")
+    return user

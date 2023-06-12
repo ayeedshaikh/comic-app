@@ -5,3 +5,4 @@ boto3
 beautifulsoup4
 localstack
 python-dotenv
+Flask-JWT-Extended

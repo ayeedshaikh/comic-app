@@ -93,6 +93,73 @@ paths:
         '400':
           description: Bad Request
 
+  /register:
+    post:
+      summary: Register a new user
+      operationId: "controller.register_user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Bad request
+  /login:
+    post:
+      summary: User login
+      operationId: "controller.login"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+        '401':
+          description: Unauthorized
+  /profile:
+    get:
+      summary: Get user profile
+      operationId: "controller.get_user_profile"
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
 components:
   schemas:
     ComicResponse:
@@ -109,4 +176,8 @@ components:
         views:
           type: integer
 
-
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

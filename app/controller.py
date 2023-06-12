@@ -1,7 +1,9 @@
 from datetime import datetime
 from flask import abort
 from utils import fetch_metadata, archive_links
-from models import read_from_comic, update_views
+from models import read_from_comic, update_views, create_user, get_user
+from flask import request
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 """
     When the user provides a date, the API will fetch the comic published on that date.
@@ -95,3 +97,36 @@ def get_comic_statistics(comic_id):
             "views": read_db['Item']['views']
         }
     return {"error": "No comic found with the given id."}
+
+
+def register_user():
+    username = request.json["username"]
+    password = request.json["password"]
+
+    create_user(username, password)
+    return "User registered successfully", 201
+
+
+# User login
+def login():
+    username = request.json["username"]
+    password = request.json["password"]
+
+    user = get_user(username)
+    if user and user["password"] == password:
+        access_token = create_access_token(identity=username)
+        return {"access_token": access_token}, 200
+    else:
+        return "Invalid username or password", 401
+
+
+# Protected route
+@jwt_required()
+def get_user_profile():
+    current_user = get_jwt_identity()
+    user = get_user(current_user)
+
+    if user:
+        return {"username": user["username"]}, 200
+    else:
+        return "User not found", 404
